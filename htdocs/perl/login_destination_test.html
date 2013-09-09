@@ -1,0 +1,38 @@
+<html>
+<head>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script>
+
+$(document).ready(function(){
+var locate = window.location;
+document.joe.burns.value = locate;
+var text = document.joe.burns.value;
+
+function get_username(str){
+	theleft = str.indexOf("=") + 1;
+	theright = str.lastIndexOf("&");
+	return(str.substring(theleft, theright));
+}
+
+function get_password(str){
+	point = str.lastIndexOf("=");
+	return(str.substring(point+1,str.length));
+}
+document.write("Username is " + get_username(text) + " and the password is " + get_password(text));
+
+});
+
+</script>
+</head>
+
+<body>
+
+<p>Hello</p>
+
+<form name="joe">
+<input type="hidden" name="burns">
+</form>
+
+</body>

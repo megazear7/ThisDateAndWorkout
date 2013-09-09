@@ -1,0 +1,44 @@
+<html>
+<head>
+
+<script 
+src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js">
+</script>
+
+<script>
+
+$(document).ready(function(){
+
+hr = new XMLHttpRequest();
+url = "perlretrieve.pl";
+
+hr.open("GET", url, true);
+hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    hr.onreadystatechange = function() 
+    {
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    
+		    document.getElementById("info").innerHTML = return_data;
+	    }
+    }
+
+hr.send(null);
+
+});
+
+</script>
+
+</head>
+<body>
+
+<button onclick="fun()">click</button>
+
+<a href="wallsgame_home.html">Click here to go back to the home page</a>
+
+<p id="info">nothing</p>
+
+</body>
+</html>

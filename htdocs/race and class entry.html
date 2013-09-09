@@ -1,0 +1,52 @@
+<html>
+<head>
+
+<script>
+
+function fun()
+{
+
+therace = document.getElementById("race").value;
+theclass = document.getElementById("class").value;
+
+
+hr = new XMLHttpRequest();
+url = "add_character.pl";
+
+qstring = "?race=" + therace;
+qstring = qstring + "&class=" + theclass;
+
+
+hr.open("GET", url + qstring, true);
+hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    hr.onreadystatechange = function() 
+    {
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    
+		    document.getElementById("info").innerHTML = return_data;
+	    }
+    }
+
+hr.send(null);
+
+}
+
+</script>
+
+</head>
+<body>
+
+<p>Enter a Race and Class then click create to make a new character</p>
+
+<input type="text" id="race">
+<input type="text" id="class">
+<button onclick="fun();">create</button>
+<p id="info">Hasn't been clicked</p>
+
+
+
+</body>
+</html>

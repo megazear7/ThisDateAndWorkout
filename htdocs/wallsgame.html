@@ -1,0 +1,56 @@
+<html>
+<head>
+
+<script>
+
+function fun()
+{
+
+left = document.getElementById("left").value;
+fromtop = document.getElementById("top").value;
+
+
+hr = new XMLHttpRequest();
+url = "add_wall.pl";
+
+qstring = "?left=" + left;
+qstring = qstring + "&fromtop=" + fromtop;
+
+
+hr.open("GET", url + qstring, true);
+hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    hr.onreadystatechange = function() 
+    {
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    
+		    document.getElementById("info").innerHTML = return_data;
+	    }
+    }
+
+hr.send(null);
+
+}
+
+</script>
+
+</head>
+<body>
+
+<p>Enter two integers for the location of a block</p>
+
+Pixels from left edge:
+<input type="text" id="left"><br/>
+Pixels from top edge:
+<input type="text" id="top"><br/>
+    
+
+<button onclick="fun();">add wall</button><br/>
+Previously Added Wall: <p id="info"> None added </p>
+
+<a href="create_blocks_home.html">Click here to go back to the home page</a>
+
+</body>
+</html>

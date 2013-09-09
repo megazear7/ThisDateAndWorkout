@@ -1,0 +1,49 @@
+<html>
+<head>
+
+<script>
+
+function call_file(url, qstring, element)
+{
+hr = new XMLHttpRequest();
+hr.open("GET", url + qstring, false);
+hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    hr.onreadystatechange = function() 
+    {
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    
+		    document.getElementById(element).innerHTML = return_data;
+	    }
+    }
+
+hr.send(null);
+}
+
+function submit(){
+username = document.getElementById("username").value;
+password = document.getElementById("password").value;
+//call_file("redirect_test.pl", "", "test");
+call_file("perl_test.pl", "?username="+username+"&password="+password, "test");
+
+
+//window.open("workout.html", "_self");
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+Username: <input type="text" id="username"></input><br/>
+Password: <input type="text" id="password"></input><br/>
+<button onclick="submit();">Sumbit</button>
+
+<div id="test">nothing yet nope</div>
+
+</body>
+</hmtl>

@@ -1,0 +1,22 @@
+Files for This date in History:
+
+Current 'final files':
+
+This_date_absolute_positioning.html   	// absolutly positioned
+This_date_in_jquery_2.php  		// hovering over timeline segments zooms them in :: working
+filename_check.php         		// clicking on timeline segments zooms them in :: not positioned correctly
+>> This is the html page displayed to the user
+
+Date_history_timeline_testing_backend.php
+>> This is the php file that accesses the database and retrieves the text info
+
+Date_history_timeline_testing_backend_year.php
+>> This is the php file that accesses the database and retrieves the year info
+
+Things to add/fix:
+1) Make the absolutely positioned file position by percentage of the total space (width/height)
+
+2) More check boxes, one for subset of the others, say world war two history,
+ancient history, napoleonic era history, ect..
+
+3) make an option to search by year instead of by date

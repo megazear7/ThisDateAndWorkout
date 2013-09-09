@@ -1,0 +1,278 @@
+<html>
+<head>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<style>
+
+body
+{
+background-color:lightslategray;
+}
+
+div.button
+{
+display:block;
+width:90px;
+background-color:lightgray;
+text-align:center;
+}
+
+div.page
+{
+display:none;
+}
+
+li.main_button
+{
+float:left;
+}
+
+div.gear_buttons
+{
+display:block;
+width:100px;
+text-align:center;
+height:30px;
+vertical-align:middle;
+}
+
+div.page
+{
+position:absolute;
+left:8px;
+top:28px;
+background-color:gray;
+width:720px;
+height:600px;
+}
+
+div.in_gear_page
+{
+position:absolute;
+left:100px;
+top:0px;
+background-color:lightsteelblue;
+width:620px;
+height:600px;
+display:none;
+}
+
+</style>
+
+</script>
+
+<script>
+
+function call_file(url, qstring, element)
+{
+hr = new XMLHttpRequest();
+hr.open("GET", url + qstring, false);
+hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    hr.onreadystatechange = function() 
+    {
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+
+		    document.getElementById("hello").innerHTML = return_data;
+	    }
+    }
+
+hr.send(null);
+}
+
+function click()
+{
+url="perl_test.pl";
+qstring="";
+hr = new XMLHttpRequest();
+hr.open("GET", url + qstring, false);
+hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    hr.onreadystatechange = function() 
+    {
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    alert("hello");
+		    document.getElementById("library_page").innerHTML = return_data;
+	    }
+    }
+
+hr.send(null);
+}
+
+click();
+
+
+open="";
+
+function main_slider(clicked)
+{
+
+the_clicked = "#" + clicked + "_button";
+
+$(the_clicked).click(function(){
+
+	if(clicked==open)
+	{
+		open="";
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+	else if(open=="")
+	{
+		open=clicked;
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+	else if(clicked!=open && open !="")
+	{
+		slid = "#" + open + "_page";
+		$(slid).slideToggle();
+		open=clicked;
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+});
+
+
+}
+
+$(document).ready(function(){
+
+main_slider("gear");
+main_slider("sunday");
+main_slider("monday");
+main_slider("tuesday");
+main_slider("wednesday");
+main_slider("thursday");
+main_slider("friday");
+main_slider("saturday");
+
+gear_open="";
+
+function gear_slider(clicked)
+{
+
+the_clicked = "#" + clicked + "_button";
+
+$(the_clicked).click(function(){
+
+	if(clicked==gear_open)
+	{
+		gear_open="";
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+	else if(gear_open=="")
+	{
+		gear_open=clicked;
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+	else if(clicked!=gear_open && gear_open!="")
+	{
+		slid = "#" + gear_open + "_page";
+		$(slid).slideToggle();
+		gear_open=clicked;
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+});
+
+}
+
+gear_slider("add");
+gear_slider("library");
+gear_slider("settings");
+
+
+});
+
+</script>
+
+</head>
+
+<body>
+
+<ul style="list-style-type:none;margin:0;padding:0;overflow:hidden;//border:solid 2px gray;">
+
+<li class="main_button"><div class="button" id="gear_button" style="">Settings</div></li>
+
+<li class="main_button"><div class="button" id="sunday_button" style="">Sunday</div></li>
+
+<li class="main_button"><div class="button" id="monday_button" style="">Monday</div></li>
+
+<li class="main_button"><div class="button" id="tuesday_button" style="">Tuesday</div></li>
+
+<li class="main_button"><div class="button" id="wednesday_button" style="">Wednesday</div></li>
+
+<li class="main_button"><div class="button" id="thursday_button" style="">Thursday</div></li>
+
+<li class="main_button"><div class="button" id="friday_button" style="">Friday</div></li>
+
+<li class="main_button"><div class="button" id="saturday_button" style="">Saturday</div></li>
+
+</ul>
+
+<div class="page" id="gear_page" style="">
+
+<ul style="list-style-type:none;margin:0;padding:0;">
+
+<li><div class="gear_buttons" id="add_button">Add Workout</div></li>
+<li><div class="gear_buttons" id="library_button">Library</div></li>
+<li><div class="gear_buttons" id="settings_button">Settings</div></li>
+
+</ul>
+
+<div class="in_gear_page" id="add_page">
+
+<input type="text" size="2"></input> sets of 
+<input type="text" size="3"></input> reps of
+<input type="text" size="6"></input>
+<select>
+	<option>not timed</option>
+	<option>timed</option>
+</select>
+time: (in seconds) <input type="text" size="6"></input>
+<button>Add</button>
+
+</div>
+
+<div class="in_gear_page" id="library_page">
+
+<button onclick="click()"></button>
+
+the library
+
+</div>
+
+<div class="in_gear_page" id="settings_page">the settings</div>
+
+</div>
+
+<div class="page" id="sunday_page" style="">workout for sunday</div>
+
+<div class="page" id="monday_page" style="">workout for monday</div>
+
+<div class="page" id="tuesday_page" style="">workout for tuesday</div>
+
+<div class="page" id="wednesday_page" style="">workout for wednesday</div>
+
+<div class="page" id="thursday_page"style="">workout for thursday</div>
+
+<div class="page" id="friday_page" style="">workout for friday</div>
+
+<div class="page" id="saturday_page" style="">workout for saturday</div>
+
+<p id="hello">hello</p>
+
+
+
+
+
+</body>
+</html>

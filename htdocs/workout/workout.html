@@ -1,0 +1,564 @@
+<html>
+<head>
+<!-- use jquery library provided by google -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<style>
+
+body
+{
+background-color:lightslategray;
+}
+
+
+div.login_outer
+{
+height:200px;
+width:400px;
+background-color:darkgrey;
+position:absolute;
+top:200px;
+left:300px;
+border-style:groove;
+border-color:grey;
+display:none;
+}
+
+div.login
+{
+position:absolute;
+top:30px;
+left:50px;
+}
+
+div.logged_info
+{
+position:absolute;
+top:5px;
+left:5px;
+}
+
+div.log_in
+{
+position:absolut;
+top:5px;
+left:80px;
+}
+
+div.log_out
+{
+position:absolut;
+top:5px;
+left:80px;
+}
+
+
+div.button
+{
+display:block;
+width:90px;
+background-color:lightgray;
+text-align:center;
+}
+
+div.page
+{
+display:none;
+}
+
+li.main_button
+{
+float:left;
+}
+
+div.the_home_page
+{
+position:absolute;
+left:8px;
+top:75px;
+background-color:lightslategray;
+width:720px;
+height:600px;
+}
+
+div.gear_buttons
+{
+display:block;
+width:100px;
+text-align:center;
+height:30px;
+vertical-align:middle;
+}
+
+div.page
+{
+position:absolute;
+left:0px;
+top:75px;
+background-color:gray;
+width:720px;
+height:600px;
+}
+
+div.in_gear_page
+{
+position:absolute;
+left:100px;
+top:0px;
+background-color:lightsteelblue;
+width:620px;
+height:600px;
+display:none;
+}
+
+</style>
+
+</script>
+
+<script>
+
+var username = getCookie("username");
+var isLoggedIn = getCookie("isLoggedIn");
+
+sunday_workout = "";
+monday_workout = "";
+tuesday_workout = "";
+wednesday_workout = "";
+thursday_workout = "";
+friday_workout = "";
+saturday_workout = "";
+
+function call_file(url, qstring, element){
+	hr = new XMLHttpRequest();
+	hr.open("GET", url + qstring, false);
+	hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    hr.onreadystatechange = function() {
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    
+		    document.getElementById(element).innerHTML = return_data;
+	    }
+    }
+	hr.send(null);
+}
+
+function call_file_return(url, qstring, element){
+	hr = new XMLHttpRequest();
+	hr.open("GET", url + qstring, false);
+	hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	value = "";
+
+    hr.onreadystatechange = function(){
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    
+		    value = return_data;   
+	    }
+    }
+	hr.send(null);
+	return value;
+}
+
+function add_exercise()
+{
+	user="alex";
+	workout = document.getElementById("current_workout").value;
+	sets = document.getElementById("sets").value;
+	reps = document.getElementById("reps").value;
+	name = document.getElementById("name").value;
+
+	is_timed = document.getElementById("is_timed").value;
+	if(is_timed == "timed"){is_timed_value=1;}
+	else{is_timed_value=0;}
+
+	time = document.getElementById("time").value;
+	
+	call_file("add_exercise.pl", "?user="+username+"&workout="+workout+"&sets="+sets+"&reps="+reps+"&name="+name+"&is_timed="+is_timed_value+"&time="+time, "did_add_work");
+}
+
+function add_to_day()
+{	
+	user="alex";
+	day = document.getElementById("day_to_add_to").value;
+	workout = document.getElementById("workout_dropdown_menu").value;
+	call_file("add_to_day.pl", "?user="+username+"&day="+day+"&workout="+workout, "working");
+}
+
+
+
+open="";
+
+function main_slider(clicked)
+{
+
+the_clicked = "#" + clicked + "_button";
+
+$(the_clicked).click(function(){
+
+	if(clicked==open)
+	{
+		open="";
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+	else if(open=="")
+	{
+		open=clicked;
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+	else if(clicked!=open && open !="")
+	{
+		slid = "#" + open + "_page";
+		$(slid).slideToggle();
+		open=clicked;
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+
+	if(open!="gear")
+	{
+		the_open_page_id = open + "_page";
+		workout = call_file_return("workout_day.pl", "?day="+clicked+"&user="+username, "");
+		username = "alex";
+		call_file("return_all.pl", "?workout="+workout+"&user="+username, the_open_page_id);
+	}
+});
+
+
+}
+
+function setCookie(c_name,value,exdays)
+{
+var exdate=new Date();
+exdate.setDate(exdate.getDate() + exdays);
+var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+document.cookie=c_name + "=" + c_value;
+}
+
+function getCookie(c_name)
+{
+var i,x,y,ARRcookies=document.cookie.split(";");
+for (i=0;i<ARRcookies.length;i++)
+{
+  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+  x=x.replace(/^\s+|\s+$/g,"");
+  if (x==c_name)
+    {
+    return unescape(y);
+    }
+  }
+}
+
+$(document).ready(function(){
+
+
+
+if(isLoggedIn == 1){
+	$("#logged_in").show();
+	$("#logged_out").hide();
+	document.getElementById("text_holder_logged_in").innerHTML = "You are logged in as " + username;
+}else{
+	$("#logged_in").hide();
+	$("#logged_out").show();
+}
+
+$("#login_form_button").click(function(){
+	$(".login_outer").show();
+	$('#page').fadeTo("fast", .5);
+});
+
+$("#login_button").click(function(){
+
+	username = document.getElementById("username").value;
+	password = document.getElementById("password").value;
+	
+	the_result = call_file_return("check_password.pl", "?username="+username+"&password="+password, "password_checker");
+	
+	if(the_result == "yes"){
+		setCookie("username",username,1);
+		setCookie("isLoggedIn",1,1);
+		$("#logged_in").toggle();
+		$("#logged_out").toggle();
+		document.getElementById("text_holder_logged_in").innerHTML = "You are logged in as " + username;
+		$(".login_outer").hide();
+		$('#page').fadeTo("fast", 1);
+	}else{
+		$(".login_outer").show();
+		$('#page').fadeTo("fast", .5);
+		alert("Incorrect login or username");
+		//$("#logged_in").toggle();
+		//$("#logged_out").toggle();
+	}
+	
+	document.getElementById("password").value = "";
+});
+
+$("#logout").click(function(){
+
+		setCookie("username","",1);
+		setCookie("isLoggedIn",0,1);
+		
+		username = getCookie("username");
+		isLoggedIn = getCookie("isLoggedIn");
+		
+		$("#logged_in").toggle();
+		$("#logged_out").toggle();
+});
+
+$("#procede_out").click(function(){
+	$(".login_outer").hide();
+	$('#page').fadeTo("fast", 1);
+});
+
+enter_username = '"' + username + '"';
+document.getElementById("current_user").innerHTML = enter_username;
+
+main_slider("gear");
+main_slider("sunday");
+main_slider("monday");
+main_slider("tuesday");
+main_slider("wednesday");
+main_slider("thursday");
+main_slider("friday");
+main_slider("saturday");
+
+gear_open="";
+
+function gear_slider(clicked)
+{
+
+the_clicked = "#" + clicked + "_button";
+
+$(the_clicked).click(function(){
+
+	if(clicked==gear_open)
+	{
+		gear_open="";
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+	else if(gear_open=="")
+	{
+		gear_open=clicked;
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+	else if(clicked!=gear_open && gear_open!="")
+	{
+		slid = "#" + gear_open + "_page";
+		$(slid).slideToggle();
+		gear_open=clicked;
+		slid = "#" + clicked + "_page";
+		$(slid).slideToggle();
+	}
+});
+
+}
+
+gear_slider("add");
+gear_slider("library");
+gear_slider("settings");
+
+$("#library_button").click(function(){
+	call_file("create_workout_dropdown.pl", "?user="+username, "workout_dropdown");
+	call_file("return_all.pl", "?workout=-&user="+username, "library_exercises");
+});
+
+$("#add_workout").click(function(){
+	workout = document.getElementById("new_workout").value;
+	call_file("add_workout_only.pl", "?user="+username+"&workout="+workout, "was_workout_added");
+	call_file("make_add_dropdown.pl", "?user="+username, "add_dropdown");
+});
+
+$("#add_button").click(function(){
+	call_file("make_add_dropdown.pl", "?user="+username, "add_dropdown");
+});
+
+$("#workout_dropdown").click(function(){
+	workout = document.getElementById("workout_dropdown_menu").value;
+	call_file("return_all.pl", "?workout="+workout+"&user="+username, "library_exercises");
+});
+
+
+});
+
+</script>
+
+</head>
+
+<div id="page">
+
+<body>
+
+<ul style="list-style-type:none;margin:0;padding:0;overflow:hidden;position:absolute;left:0px;top:55px;//border:solid 2px gray;">
+
+<li class="main_button"><div class="button" id="gear_button" style="">Settings</div></li>
+
+<li class="main_button"><div class="button" id="sunday_button" style="">Sunday</div></li>
+
+<li class="main_button"><div class="button" id="monday_button" style="">Monday</div></li>
+
+<li class="main_button"><div class="button" id="tuesday_button" style="">Tuesday</div></li>
+
+<li class="main_button"><div class="button" id="wednesday_button" style="">Wednesday</div></li>
+
+<li class="main_button"><div class="button" id="thursday_button" style="">Thursday</div></li>
+
+<li class="main_button"><div class="button" id="friday_button" style="">Friday</div></li>
+
+<li class="main_button"><div class="button" id="saturday_button" style="">Saturday</div></li>
+
+</ul>
+
+<div class="the_home_page" id="home_page" style="">
+<h3>Workout</h3>
+<p>
+This is a workout app. To add/modify workouts go the the settings tab. You can 
+also asign certain workouts to certain days in the settings tab. To workout
+click on the day that it currently is, and you'll see the workout that you have 
+assigned to that day. To give suggestions and ideas there will be a button on
+this page (i.e. the home page).
+</p>
+</div>
+
+<div class="page" id="gear_page" style="">
+
+<ul style="list-style-type:none;margin:0;padding:0;">
+
+<li><div class="gear_buttons" id="add_button">Add Workout</div></li>
+<li><div class="gear_buttons" id="library_button">Library</div></li>
+<li><div class="gear_buttons" id="settings_button">Settings</div></li>
+
+</ul>
+
+<div class="in_gear_page" id="add_page">
+
+<div id="add_dropdown"></div> 
+
+<input id="sets" type="text" size="2"></input> sets of 
+<input id="reps" type="text" size="3"></input> reps of
+<input id="name" type="text" size="6"></input>
+<select id="is_timed">
+	<option>not timed</option>
+	<option>timed</option>
+</select>
+time: (in seconds) <input id="time" type="text" size="6"></input>
+<button id="add" onclick="add_exercise()">Add</button>
+
+<div id="did_add_work"></div>
+
+<div id="was_workout_added"></div>
+
+<br/>
+
+or add new workout: <input id="new_workout"></input>
+<button id="add_workout">Add New Workout</button>
+
+</div>
+
+<div class="in_gear_page" id="library_page">
+
+<div id="workout_dropdown"></div>
+
+<div id="library_exercises">gvjh</div>
+
+<button onclick="add_to_day()">Add this workout to:</button>
+
+<select id="day_to_add_to">
+	<option>sunday</option>
+	<option>monday</option>
+	<option>tuesday</option>
+	<option>wednesday</option>
+	<option>thursday</option>
+	<option>friday</option>
+	<option>saturday</option>
+</select>
+
+<p id="working"></p>
+
+</div>
+
+<div class="in_gear_page" id="settings_page">
+	password result = <div id="password_checker"></div>
+	<br/>
+	Current User = <div id="current_user"></div> 
+	<br/> 
+	Current users password = <div id="current_password"></div></div>
+
+</div>
+
+<div class="page" id="sunday_page" style="">
+
+<div id="sunday_page_workout"></div>
+
+</div>
+
+<div class="page" id="monday_page" style="">
+
+<div id="monday_page_workout"></div>
+
+</div>
+
+<div class="page" id="tuesday_page" style="">
+
+<div id="tuesday_page_workout"></div>
+
+</div>
+
+<div class="page" id="wednesday_page" style="">
+
+<div id="wednesday_page_workout"></div>
+
+</div>
+
+<div class="page" id="thursday_page"style="">
+
+<div id="thursday_page_workout"></div>
+
+</div>
+
+<div class="page" id="friday_page" style="">
+
+<div id="friday_page_workout"></div>
+
+</div>
+
+<div class="page" id="saturday_page" style="">
+
+<div id="saturday_page_workout"></div>
+
+</div>
+
+<input style="display:none;" id="workout_holder"></input>
+
+<div id="logged_out" class="logged_info">
+<p id="text_holder_logged_out" style="display:inline">You are not logged in</p>
+<button id="login_form_button" class="log_out">login</button>
+</div>
+
+<div id="logged_in" class="logged_info">
+<p id="text_holder_logged_in" style="display:inline"></p>
+<button id="logout" class="log_in">logout</button>
+</div>
+
+</div>
+
+<div id="login_box" class="login_outer">
+
+<strong>Login:</strong>
+<div class="login">
+Username: <INPUT TYPE="text" id="username"> <br/>
+Password: <INPUT TYPE="password" id="password"> 
+<button id="login_button">Login</button>
+
+<button id="procede_out">Proceed Logged Out</button>
+<br/><br/><br/>(some of the functionality may be limited)
+</div>
+</div>
+</body>
+</html>

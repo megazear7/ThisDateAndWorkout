@@ -1,0 +1,275 @@
+<html>
+<head>
+
+<style>
+
+body
+{
+background-color:LightCyan;
+}
+
+p.login_identifier;
+{
+display:inline;
+}
+
+div.user_section
+{
+position:absolute;
+left:50px;
+top:50px;
+background-color:GainsBoro;
+}
+
+div.add_section
+{
+position:absolute;
+left:50px;
+top:350px;
+background-color:GainsBoro;
+}
+
+div.library_section
+{
+position:absolute;
+left:500px;
+top:50px;
+background-color:GainsBoro;
+}
+
+div.new_user
+{
+position:absolute;
+left:10px;
+top:10px;
+background-color:GainsBoro;
+}
+
+div.message_board
+{
+position:absolute;
+left:500px;
+top:350px;
+background-color:GainsBoro;
+}
+
+</style>
+
+<!-- use jquery library provided by google -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script>
+
+// this function is used many times, it calls a perl file, sends info to the perl file, and what is returned from the
+// perl file is placed into a html element
+// url: perl file to be called
+// qstring: info to send perl file
+// element: element to update with the return info
+function call_file(url, qstring, element)
+{
+hr = new XMLHttpRequest();
+hr.open("GET", url + qstring, false);
+hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    hr.onreadystatechange = function() 
+    {
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    
+		    document.getElementById(element).innerHTML = return_data;
+	    }
+    }
+
+hr.send(null);
+}
+
+function call_file_return(url, qstring, element){
+	hr = new XMLHttpRequest();
+	hr.open("GET", url + qstring, false);
+	hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	value = "";
+
+    hr.onreadystatechange = function(){
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    
+		    value = return_data;   
+	    }
+    }
+	hr.send(null);
+	return value;
+}
+
+$(document).ready(function(){
+
+var locate = window.location;
+document.joe.burns.value = locate;
+var text = document.joe.burns.value;
+
+function get_username(str){
+	theleft = str.indexOf("=") + 1;
+	theright = str.lastIndexOf("&");
+	return(str.substring(theleft, theright));
+}
+
+function get_password(str){
+	point = str.lastIndexOf("=");
+	return(str.substring(point+1,str.length));
+}
+
+document.getElementById("username").value = get_username(text);
+document.getElementById("password").value = get_password(text);
+username = document.getElementById("username").value;
+password = document.getElementById("password").value;
+
+the_result = call_file_return("check_password.pl", "?username="+username+"&password="+password, "password_checker");
+if(the_result == "yes"){
+	document.getElementById("password_checker").innerHTML = "Logged in as " + username;
+}else{
+	document.body.innerHTML = "";
+	alert("Invalid Username or Password");
+	document.body.innerHTML = "<form method='link' action='new_account.html' id='new_account'></form>";
+	document.forms["new_account"].submit();
+}
+
+call_file("make_movie_dropdown.pl", "", "movies");
+call_file("make_user_dropdown.pl", "", "user_dropdown");
+
+$("#add_movie").click(function(){
+	name = document.getElementById("movie_to_add").value;
+	call_file("add_movie.pl", "?name="+name, "did_add_work");
+	call_file("make_movie_dropdown.pl", "", "movies");
+});
+
+$("#view_list").click(function(){
+	user = document.getElementById("user_dropdown_menu").value;
+	//call_file("return_list.pl", "?user="+user, "display_user_list");
+	//call_file("perl_work_test.pl", "", "display_user_list");
+	call_file("test.pl", "?user="+user, "display_user_list");
+});
+
+$("#change_list").click(function(){
+	movie = document.getElementById("movie_dropdown_menu").value;
+	rank = document.getElementById("rank").value;
+	call_file("change_list.pl", "?movie="+movie+"&user="+username+"&password="+password+"&rank="+rank, "user_change");
+});
+
+$("#add_user").click(function(){
+	call_file("add_user.pl", "?username="+username+"&password="+password, "did_user_add_work");
+	call_file("make_user_dropdown.pl", "", "user_dropdown");
+});
+
+$("#create_new_account").click(function(){
+	window.location = "new_account.html";
+});
+
+$("#logout").click(function(){
+	window.location = "login_page.html";
+});
+
+});
+
+</script>
+
+</head>
+
+<body>
+
+<div class="user_section">
+Ajust Your List:
+<div id="movies"></div>
+
+<select id="rank">
+	<option>first</option>
+	<option>second</option>
+	<option>third</option>
+	<option>fourth</option>
+	<option>fifth</option>
+	<option>bonus_one</option>
+	<option>bonus_two</option>
+</select>
+
+<button id="change_list">Add Movie</button>
+<br/>
+<div id="user_change"></div>
+
+<!-- End of user_section -->
+</div>
+
+<div class="add_section">
+Add Movie to List (check list well first)
+<br/>
+<input type="text" id="movie_to_add"></input>
+<br/>
+<button id="add_movie">Add Movie To List of Possible Movies</button>
+
+<div id="did_add_work"></div>
+
+</div>
+
+<div class="library_section">
+Look At other Peoples list's
+<br/>
+
+<button id="view_list">View List</button>
+
+<div id="user_dropdown"></div>
+
+<div id="display_user_list"></div>
+
+</div>
+
+<div class="new_user">
+<p id="password_checker" style="display:inline;">Not Logged In</p>
+<button id="create_new_account">Create New Account</button>
+<button id="logout">Logout</button>
+<br/>
+<div id="did_user_add_work"></div>
+
+</div>
+
+<div class="message_board">
+<p>Post information, message board / news type of thing <br/>
+Not started yet but there will be a message board and maybe <br />
+some other stuff. Also a way to message to people individually <br/>
+</p>
+
+</div>
+
+<form name="joe">
+<input type="hidden" name="burns">
+</form>
+
+<input type="hidden" id="username">
+<input type="hidden" id="password">
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+Files:
+office.html			<< Html page that displays the app to the user
+make_user_dropdown.pl		<< 			
+test.pl				<< returns users movie list
+change_list.pl			<<
+add_movie.pl			<<
+add_user.pl			<<
+make_movie_dropdown.pl		<< creates dropdown with move list
+
+App:
+create a web app that allows people to enter a new user (with a password)
+the user can enter there username and password and then enter there top
+5 movie list and there 2 bonus movies
+the web app has a library of other people's lists and shows the points
+that each player has
+
+point system:
+players get 10 points for a movie being in the correct spot in the top
+five box office (world wide) list. For every position off they are they
+get 3 points deducted. Points are only awarded for movies that made it into 
+the top five list. Player recieve 5 bonus points if one of there bonus movies
+made it into the list.
+
+To Do:
+
+1) Modify the files to do what I want them to do in order:
+office.html
+add_exercise.pl
+return_all.pl
+create_workout_dropdown.pl

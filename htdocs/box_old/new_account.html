@@ -1,0 +1,117 @@
+<html>
+<head>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<style>
+
+body
+{
+background-color:lightslategray;
+}
+
+div.make_div
+{
+background-color:lightsteelblue;
+position:absolute;
+left:50px;
+top:50px;
+width:400px;
+height:80px;
+}
+
+div.login_div
+{
+background-color:lightsteelblue;
+position:absolute;
+left:50px;
+top:150px;
+width:400px;
+height:80px;
+display:none;
+}
+
+div.reveal_login_div
+{
+background-color:lightsteelblue;
+position:absolute;
+left:50px;
+top:150px;
+width:400px;
+height:80px;
+}
+
+</style>
+
+<script>
+
+function call_file_return(url, qstring, element){
+	hr = new XMLHttpRequest();
+	hr.open("GET", url + qstring, false);
+	hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	value = "";
+
+    hr.onreadystatechange = function(){
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    
+		    value = return_data;   
+	    }
+    }
+	hr.send(null);
+	return value;
+}
+
+$(document).ready(function(){
+	
+	$("#create_account").click(function(){
+		username = document.getElementById("new_username").value;
+		password = document.getElementById("new_password").value;
+		success = call_file_return("create_account.pl", "?user="+username+"&password="+password, "");
+		
+		if(success == "created"){
+			alert("New account created, click ok to go to login page");
+			document.body.innerHTML = "<form method='link' action='login_page.html' id='login_page'></form>";
+			document.forms["login_page"].submit();
+		}else if(success == "already_taken"){
+			alert("That username has already been taken, please choose another username");
+			document.getElementById("new_username").value = "";
+			document.getElementById("new_password").value = "";
+		}
+	});
+	
+	$("#reveal_login").click(function(){
+		$("#reveal_login_div_id").slideToggle();
+		$(".login_div").slideToggle();
+	});
+	
+});
+
+</script>
+
+</head>
+<body>
+
+<div class="make_div">
+Make a new account:<br/>
+
+New Username: <input type="text" id="new_username"></input><br/>
+New Password: <input type="password" id="new_password"></input>
+<button id="create_account">Create Account</button>
+</div>
+
+<div class="login_div">
+Or try to login again:<br/>
+<FORM METHOD="LINK" ACTION="office.html">
+Username: <INPUT TYPE="text" NAME="Fe"> <br/>
+Password: <INPUT TYPE="password" NAME="Le"> 
+<INPUT TYPE="submit" VALUE="Login">
+</FORM>
+</div>
+
+<div class="reveal_login_div" id="reveal_login_div_id"><button id="reveal_login">Try To Login Again</button></div>
+
+
+</body>
+</html>

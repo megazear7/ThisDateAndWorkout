@@ -1,0 +1,15 @@
+to the create_blocks_test.html file:
+
+'1' 's are apearing going down left side of page. this causes double clicks to highlight the page. figure out how these 1's are getting there
+and both problems will go away.
+
+dbldelete.pl
+
+drag_and_add.pl
+
+add_home_block.pl
+
+create_blocks_perl_test.pl
+
+
+

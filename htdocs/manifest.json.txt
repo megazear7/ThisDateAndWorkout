@@ -1,0 +1,20 @@
+{
+  "name": "This Date",
+  "description": "this date information",
+  "version": "1",
+  "app": {
+    "urls": [
+      "http://thisdate.biz14.com/filename_check.php"
+    ],
+    "launch": {
+      "http://thisdate.biz14.com/filename_check.php"
+    }
+  },
+  "icons": {
+    "128": "icon_128.png"
+  },
+  "permissions": [
+    "unlimitedStorage",
+    "notifications"
+  ]
+}

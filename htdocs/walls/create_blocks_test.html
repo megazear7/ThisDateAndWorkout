@@ -1,0 +1,195 @@
+<html>
+<head>
+
+<script 
+src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js">
+</script>
+
+<script>
+
+current_color = "black";
+
+$(document).ready(function(){
+
+/* This is supposed to delete div elements when you click on them, it does not work
+$("div").click(function(){
+
+	this_position = $(this).offset();
+
+	call_file("dbldelete.pl", "?left=" + this_position.left + "&top=" + this_position.top, "info");
+
+	create_all_blocks();
+});
+*/
+
+$(document).dblclick(function(){
+
+	call_file("drag_and_add.pl","?left=" + event.pageX + "&top=" + event.pageY + "&color=" + current_color, "info");
+
+	create_all_blocks();
+
+});
+
+can_move = 0;
+//document.getElementById("help").innerHTML = can_move;
+
+$(document).mousemove(function(){
+	if (can_move == 1)
+	{
+	$("#home").css("top",event.pageY-20);
+	$("#home").css("left",event.pageX-20);
+	//document.getElementById("help").innerHTML = "can_move = " + can_move;
+	}
+});
+
+
+$("#home").click(function(){
+	
+	if(can_move == 1)
+	{
+
+	can_move = 0;
+	//document.getElementById("help").innerHTML = "can_move = " + can_move;
+
+	position = $("#home").offset();	
+
+	call_file("drag_and_add.pl", "?left=" + position.left + "&top=" + position.top, "info");	
+
+	$("#home").css("top",0);
+	$("#home").css("left",0);	
+
+	create_all_blocks();
+
+	}
+
+	else if(can_move == 0)
+	{
+	can_move = 1;
+	//document.getElementById("help").innerHTML = "can move = " + can_move;
+	}
+
+});
+
+
+
+})
+
+
+function blocks_select(id, color)
+{
+
+selector = "#" + id;
+$(selector).click(function(){
+	
+	select = "#home" + current_color;
+	$(select).css("opacity", ".5");
+	
+	current_color = color;
+
+	select = "#home" + color;
+	$(select).css("opacity", "1");
+
+});
+}
+
+$(document).ready(function(){
+
+call_file("add_home_block.pl", "?color=blue&pos=200&id=homeblue", "blue");
+blocks_select("homeblue", "blue");
+
+call_file("add_home_block.pl", "?color=green&pos=300&id=homegreen", "green");
+blocks_select("homegreen", "green");
+
+
+call_file("add_home_block.pl", "?color=black&pos=100&id=homeblack", "black");
+blocks_select("homeblack", "black");
+
+call_file("add_home_block.pl", "?color=orange&pos=400&id=homeorange", "orange");
+blocks_select("homeorange", "orange");
+
+call_file("add_home_block.pl", "?color=red&pos=500&id=homered", "red");
+blocks_select("homered", "red");
+
+call_file("add_home_block.pl", "?color=pink&pos=600&id=homepink", "pink");
+blocks_select("homepink", "pink");
+
+call_file("add_home_block.pl", "?color=yellow&pos=700&id=homeyellow", "yellow");
+blocks_select("homeyellow", "yellow");
+
+call_file("add_home_block.pl", "?color=aqua&pos=800&id=homeaqua", "aqua");
+blocks_select("homeaqua", "aqua");
+
+call_file("add_home_block.pl", "?color=darkgoldenrod&pos=900&id=homedarkgoldenrod", "darkgoldenrod");
+blocks_select("homedarkgoldenrod", "darkgoldenrod");
+
+call_file("add_home_block.pl", "?color=lime&pos=1000&id=homelime", "lime");
+blocks_select("homelime", "lime");
+
+call_file("add_home_block.pl", "?color=violet&pos=1100&id=homeviolet", "violet");
+blocks_select("homeviolet", "violet");
+
+call_file("add_home_block.pl", "?color=white&pos=1200&id=homewhite", "white");
+blocks_select("homewhite", "white");
+
+
+});
+
+
+
+$(document).ready(function(){
+call_file("create_blocks_perl_test.pl", "", "info");
+});
+
+function create_all_blocks()
+{
+call_file("create_blocks_perl_test.pl", "", "info");
+}
+
+function call_file(url, qstring, element)
+{
+hr = new XMLHttpRequest();
+
+hr.open("GET", url + qstring, false);
+hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    hr.onreadystatechange = function() 
+    {
+	    if(hr.readyState == 4 && hr.status == 200) 
+            {
+		    var return_data = hr.responseText;
+		    
+		    document.getElementById(element).innerHTML = return_data;
+	    }
+    }
+
+hr.send(null);
+}
+
+</script>
+
+</head>
+<body>
+
+<!-- the div element for the color buttons, every button needs a div element with the id equalying its color -->
+<div id="blue"></div>
+<div id="green"></div>
+<div id="black"></div>
+<div id="orange"></div>
+<div id="red"></div>
+<div id="pink"></div>
+<div id="yellow"></div>
+<div id="aqua"></div>
+<div id="darkgoldenrod"></div>
+<div id="lime"></div>
+<div id="violet"></div>
+<div id="white"></div>
+
+<div id="home-stays" style="background-color:black;width:50px;height:50px;padding:10px;border:5px solid gray;margin:10px;position:absolute;left:0;top:0;"></div>
+
+<div id="home" style="background-color:black;width:50px;height:50px;padding:10px;border:5px solid gray;margin:10px;position:absolute;left:0;top:0;"></div>
+
+<p style="position:absolute;left:500px;top:20px;" id="help"></p>
+<p id="info"></p>
+
+</body>
+</html>

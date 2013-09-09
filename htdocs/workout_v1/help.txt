@@ -1,0 +1,60 @@
+files:
+
+add_workout_only.pl	<< adds a workout to the database
+workout.html		<< display page
+add_exercise.pl		<< adds exercise to database
+return_all.pl		<< returns exercises from database, needs work discribed in things to do section
+create_workout_dropdown.pl << creates the workout drop down
+make-add_dropdown.pl
+workout_day.pl
+login_page.html
+add_to_day.pl
+new_account.html
+create_account.pl
+check_password.pl
+
+workout app idea:
+
+add workouts for each day, excersises have check marks, notes to add, and timers if needed.
+have a library of workouts, news on home screen, workout of the week, best time ect...
+different 'styles' for the news and workout of the week, such as lifting, amrtial arts and weight loss, that you can switch between
+
+more detailed pictures in notebook
+
+start with:
+A list on the top sunday-saturday, with a gear icon in top left. When you first come to the site the home screen is shown, just 
+decsribes the app, how to use it and such. When you click on one of the days a slider comes down covering the whole screen. This slider
+has that days workout on it, a list of excersizes with check boxes. When the gear is clicked a slider comes down but instead of a workout
+it has a page that allows you to edit a workout and add it to the library, the library is listed below with a box for the day, where you 
+can type in what day it is for.
+
+problems:	workout.html won't work but workout_copy.html does. even when i copy and paste the contents of workout_copy.html to workout.html
+
+current goal:  	Make all the perl files only return data for the user that is currently logged in
+		make the login screen code the password, and the workout page decode it.
+
+steps toward current goal:
+
+go through each file and change the sql code
+
+things to do:
+
+switch color of the "tier 2 menu" (the light blue) and the "tier 1 menu's" (grey)
+
+make unselected menu items dim. (in all them menus)
+
+make a login page, which asks for a username and password and a login page, when correct credentials are given the user
+	is redirected to workout.html and username and password is set to the username of the credentials entered
+
+the login page needs a create account button, which creates an account, asking for username, password, and email.
+
+
+
+
+
+
+
+
+
+
+

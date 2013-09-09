@@ -1,0 +1,44 @@
+things to do:
+
+If the settings page in the setting tab is changed (if the uneeded information is removed) it messes up the lcoation of the login buttons -- fix this
+
+switch color of the "tier 2 menu" (the light blue) and the "tier 1 menu's" (grey)
+
+make unselected menu items dim. (in all them menus)
+
+
+
+_____________________________________________________________
+files:
+
+add_workout_only.pl	<< adds a workout to the database
+workout.html		<< display page
+add_exercise.pl		<< adds exercise to database
+return_all.pl		<< returns exercises from database, needs work discribed in things to do section
+create_workout_dropdown.pl << creates the workout drop down
+make-add_dropdown.pl
+workout_day.pl
+add_to_day.pl
+create_account.pl
+check_password.pl
+
+
+______________________________________________________________
+workout app idea:
+
+add workouts for each day, excersises have check marks, notes to add, and timers if needed.
+have a library of workouts, news on home screen, workout of the week, best time ect...
+different 'styles' for the news and workout of the week, such as lifting, amrtial arts and weight loss, that you can switch between
+
+
+
+
+
+
+
+
+
+
+
+
+
